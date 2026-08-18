@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mado Design — A design partner for everything visual</title>
+<meta name="description" content="Mado Design is a one-person studio that works like your in-house designer. Ongoing, considered design support — without the full-time hire." />
+<link rel="icon" href="assets/mado-logo.png" />
+<template id="__bundler_thumbnail" data-bg-color="#FFFFFF">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#FFFFFF"/>
+    <text x="600" y="430" font-family="Arial, sans-serif" font-size="150" font-weight="700" fill="#0000EE" text-anchor="middle" letter-spacing="-6">mado</text>
+    <circle cx="600" cy="520" r="14" fill="#0000EE"/>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ============================== TOKENS ============================== */
+:root{
+  --bg:#FFFFFF;
+  --bg-2:#F5F5F5;
+  --ink:#0A0A0A;
+  --ink-2:#454545;
+  --ink-3:#6B6B6B;
+  --line:#E7E7E7;
+  --line-2:#D6D6D6;
+
+  /* accent set — overridden by Tweaks */
+  --accent:#0000EE;
+  --accent-deep:#0000EE;
+  --accent-tint:#E8E8FD;
+
+  --font-head:"Schibsted Grotesk", system-ui, sans-serif;
+  --font-body:"Hanken Grotesk", system-ui, sans-serif;
+  /* Brand wordmark — native system stack: zero load, renders everywhere, pairs with the Basenji logo */
+  --font-brand:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:"SFMono-Regular", ui-monospace, "Menlo", monospace;
+
+  --maxw:1180px;
+  --pad:clamp(20px, 5vw, 56px);
+  --radius:14px;
+}
+
+*{box-sizing:border-box;}
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:17px;
+  line-height:1.65;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation:none !important; transition:none !important;}
+}
+h1,h2,h3,h4{font-family:var(--font-head);font-weight:600;line-height:1.08;letter-spacing:-0.02em;margin:0;color:var(--ink);text-wrap:balance;}
+p{margin:0;text-wrap:pretty;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+ul{margin:0;padding:0;list-style:none;}
+
+/* ============================== LAYOUT ============================== */
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad);}
+section{position:relative;}
+.section-pad{padding-top:clamp(72px,11vw,140px);padding-bottom:clamp(72px,11vw,140px);}
+.eyebrow{
+  font-family:var(--font-body);
+  font-size:.74rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent-deep);margin:0 0 18px;display:flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:22px;height:1.5px;background:var(--accent);display:inline-block;}
+.lead{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--ink-2);max-width:60ch;}
+
+/* ============================== NAV ============================== */
+.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--bg) 86%, transparent);backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid transparent;transition:border-color .3s ease, background .3s ease;}
+.nav.scrolled{border-bottom-color:var(--line);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--font-brand);font-weight:600;font-size:1.18rem;letter-spacing:-0.02em;}
+.brand img{height:38px;width:auto;display:block;}
+.footer .brand img{height:34px;}
+.brand .mark{width:13px;height:13px;background:var(--accent);border-radius:50%;flex:none;transform:translateY(1px);}
+.nav-links{display:flex;align-items:center;gap:34px;}
+.nav-links a{font-size:.95rem;color:var(--ink-2);font-weight:500;transition:color .2s ease;}
+.nav-links a:hover{color:var(--ink);}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--font-body);font-weight:600;font-size:.95rem;
+  padding:12px 22px;border-radius:100px;border:1px solid transparent;cursor:pointer;
+  transition:background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+  white-space:nowrap;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--ink);transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-2);}
+.btn-ghost:hover{border-color:var(--ink);background:var(--bg-2);}
+.nav-cta{padding:10px 20px;}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px;margin:-8px;color:var(--ink);}
+.nav-toggle svg{display:block;}
+
+/* mobile menu */
+.mobile-menu{display:none;}
+@media (max-width: 860px){
+  .nav-links{display:none;}
+  .nav-toggle{display:block;}
+  .mobile-menu{
+    display:block;position:fixed;inset:72px 0 auto 0;z-index:49;
+    background:var(--bg);border-bottom:1px solid var(--line);
+    padding:18px var(--pad) 28px;
+    transform:translateY(-12px);opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease;
+  }
+  .mobile-menu.open{transform:translateY(0);opacity:1;pointer-events:auto;}
+  .mobile-menu a{display:block;padding:14px 0;font-size:1.1rem;font-weight:500;border-bottom:1px solid var(--line);color:var(--ink);}
+  .mobile-menu a.btn{display:flex;padding:12px 22px;margin-top:18px;width:100%;border-bottom:none;color:#fff;font-weight:600;}
+}
+
+/* ============================== HERO ============================== */
+.hero{padding-top:clamp(48px,8vw,96px);padding-bottom:clamp(56px,8vw,104px);}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:clamp(32px,5vw,72px);align-items:center;}
+.hero h1{font-size:clamp(2rem,4.4vw,3.4rem);font-weight:600;letter-spacing:-0.03em;}
+.hero h1 .accent{color:var(--accent-deep);}
+.hero p.lead{margin-top:26px;font-size:clamp(1.08rem,1.7vw,1.27rem);max-width:none;}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px;}
+.hero-trust{margin-top:48px;padding-top:28px;border-top:1px solid var(--line);}
+.hero-trust .label{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:14px;}
+.hero-trust .names{display:flex;flex-wrap:wrap;gap:10px 28px;font-family:var(--font-head);font-weight:500;color:var(--ink-2);font-size:1.02rem;letter-spacing:-0.01em;}
+.hero-trust .names span{position:relative;}
+
+/* placeholder media */
+.ph{
+  position:relative;border:1px solid var(--line-2);border-radius:var(--radius);
+  background-color:var(--bg-2);
+  background-image:repeating-linear-gradient(135deg, transparent, transparent 11px, color-mix(in srgb, var(--ink) 8%, transparent) 11px, color-mix(in srgb, var(--ink) 8%, transparent) 12px);
+  display:flex;align-items:flex-end;justify-content:flex-start;overflow:hidden;
+}
+.ph .ph-tag{
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;color:var(--ink-2);
+  background:var(--bg);border:1px solid var(--line-2);border-radius:6px;padding:6px 10px;margin:14px;
+}
+.hero-media{aspect-ratio:4/5;}
+
+/* ============================== STATEMENT / IDEA ============================== */
+.idea{background:var(--bg-2);}
+.idea-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);margin-top:clamp(36px,4vw,56px);}
+.idea-block{}
+.idea-block h3{font-size:clamp(1.4rem,2.4vw,1.9rem);margin-bottom:14px;}
+.idea-block .num{font-family:var(--font-mono);font-size:.78rem;color:var(--accent-deep);letter-spacing:.06em;margin-bottom:18px;}
+.idea-block p{color:var(--ink-2);}
+.idea h2{font-size:clamp(2rem,3.8vw,3rem);max-width:18ch;}
+
+/* ============================== SERVICES ============================== */
+.svc-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;}
+.svc-head h2{font-size:clamp(2rem,3.8vw,3rem);}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:clamp(40px,5vw,60px);}
+.svc-card{border:1px solid var(--line);border-radius:var(--radius);padding:clamp(26px,3vw,40px);background:var(--bg);transition:border-color .25s ease, transform .25s ease;}
+.svc-card:hover{border-color:var(--line-2);}
+.svc-card .tagrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;}
+.svc-card h3{font-size:clamp(1.45rem,2.4vw,1.85rem);}
+.pill{font-family:var(--font-body);font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep);background:var(--accent-tint);padding:6px 12px;border-radius:100px;white-space:nowrap;}
+.svc-card .desc{color:var(--ink-2);margin:14px 0 26px;font-size:1rem;}
+.svc-list li{display:flex;align-items:flex-start;gap:13px;padding:13px 0;border-top:1px solid var(--line);font-size:1.04rem;color:var(--ink);}
+.svc-list li:first-child{border-top:none;}
+.svc-list li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-top:10px;}
+
+/* ============================== HOW IT WORKS ============================== */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:clamp(44px,5vw,64px);}
+.step{position:relative;padding-top:30px;border-top:2px solid var(--accent);}
+.step .n{font-family:var(--font-mono);font-size:.8rem;color:var(--accent-deep);letter-spacing:.08em;position:absolute;top:-30px;left:0;}
+.step h3{font-size:1.22rem;margin-bottom:10px;letter-spacing:-0.01em;}
+.step p{color:var(--ink-2);font-size:.99rem;}
+
+/* ============================== PRICING ============================== */
+.pricing{background:var(--bg-2);}
+.pricing-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;}
+.pricing-top h2{font-size:clamp(2rem,3.8vw,3rem);}
+.toggle{display:inline-flex;background:var(--bg);border:1px solid var(--line-2);border-radius:100px;padding:4px;position:relative;}
+.toggle button{
+  position:relative;z-index:1;border:none;background:none;cursor:pointer;
+  font-family:var(--font-body);font-weight:600;font-size:.92rem;color:var(--ink-2);
+  padding:9px 22px;border-radius:100px;transition:color .25s ease;min-width:78px;
+}
+.toggle button.active{color:#fff;}
+.toggle .slider{position:absolute;z-index:0;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);background:var(--accent-deep);border-radius:100px;transition:transform .3s cubic-bezier(.4,0,.2,1);}
+.toggle[data-cur="sgd"] .slider{transform:translateX(100%);}
+
+.price-group-label{font-family:var(--font-body);font-size:.74rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:clamp(40px,5vw,56px) 0 22px;}
+.proj-list{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(28px,4vw,56px);}
+.proj-item{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:20px 0;border-bottom:1px solid var(--line-2);}
+.proj-item .name{font-family:var(--font-head);font-weight:500;font-size:1.12rem;letter-spacing:-0.01em;}
+.proj-item .price{white-space:nowrap;display:flex;align-items:baseline;gap:7px;}
+.proj-item .from{font-size:.78rem;color:var(--ink-3);font-weight:500;}
+.proj-item .amt{font-family:var(--font-head);font-weight:600;font-size:1.18rem;}
+
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.tier{border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);padding:clamp(26px,2.6vw,34px);display:flex;flex-direction:column;transition:border-color .25s ease, transform .25s ease;position:relative;}
+.tier.featured{border-color:var(--accent);border-width:1.5px;}
+.tier:hover{transform:translateY(-3px);}
+.tier .badge{position:absolute;top:-11px;left:clamp(26px,2.6vw,34px);background:var(--accent);color:#fff;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:100px;}
+.tier .tname{font-family:var(--font-head);font-weight:600;font-size:1.3rem;letter-spacing:-0.01em;}
+.tier .days{color:var(--ink-3);font-size:.92rem;margin-top:4px;}
+.tier .tprice{margin:22px 0 4px;display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;}
+.tier .tprice .from{font-size:.8rem;color:var(--ink-3);font-weight:500;}
+.tier .tprice .amt{font-family:var(--font-head);font-weight:600;font-size:2rem;letter-spacing:-0.02em;}
+.tier .tprice .per{color:var(--ink-3);font-size:.92rem;}
+.tier .tdesc{color:var(--ink-2);font-size:.97rem;margin-top:10px;}
+.pricing-note{margin-top:clamp(32px,4vw,44px);color:var(--ink-3);font-size:.92rem;max-width:70ch;}
+
+/* ============================== OFFER (services + pricing) ============================== */
+.offer{background:var(--bg-2);}
+.offer-cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;margin-top:clamp(40px,5vw,60px);}
+.offer-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);padding:clamp(28px,3vw,44px);display:flex;flex-direction:column;transition:border-color .25s ease, transform .25s ease;}
+.offer-card:hover{border-color:var(--line-2);transform:translateY(-3px);}
+.offer-card .tagrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.offer-card h3{font-size:clamp(1.5rem,2.4vw,1.95rem);}
+.offer-card .desc{color:var(--ink-2);font-size:1rem;margin-bottom:8px;}
+.offer-rows{margin-top:26px;}
+.offer-row{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:16px 0;border-top:1px solid var(--line);}
+.offer-row .rname{font-family:var(--font-head);font-weight:500;font-size:1.04rem;letter-spacing:-0.01em;}
+.offer-row .rsub{display:block;color:var(--ink-3);font-size:.82rem;font-weight:400;font-family:var(--font-body);letter-spacing:0;margin-top:3px;}
+.offer-row .rprice{white-space:nowrap;text-align:right;line-height:1.35;}
+.offer-row .from{font-size:.72rem;color:var(--ink-3);}
+.offer-row .amt{font-family:var(--font-head);font-weight:600;font-size:1.06rem;}
+.offer-row .sgd{display:block;color:var(--ink-3);font-weight:400;font-size:.84rem;}
+.offer-row .vat{display:block;color:var(--ink-3);font-weight:400;font-family:var(--font-body);font-size:.72rem;letter-spacing:0;margin-top:2px;}
+.offer-row .req{font-family:var(--font-head);font-weight:500;font-size:.98rem;color:var(--ink-2);}
+.offer-card .card-note{color:var(--ink-3);font-size:.86rem;margin-top:20px;padding-top:16px;border-top:1px solid var(--line);}
+.eyebrow.no-dash::before{display:none;}
+.eyebrow.no-dash{gap:0;}
+.addon{margin-top:24px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);padding:clamp(24px,2.6vw,34px) clamp(24px,3vw,40px);display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(18px,3vw,44px);align-items:center;}
+.addon-left{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
+.addon-left h3{font-size:clamp(1.3rem,2vw,1.6rem);}
+.addon p{color:var(--ink-2);font-size:.99rem;max-width:60ch;}
+.offer-note{margin-top:clamp(28px,3vw,36px);color:var(--ink-3);font-size:.9rem;text-align:right;}
+
+/* ============================== GOOD FIT ============================== */
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px clamp(28px,4vw,56px);margin-top:clamp(40px,5vw,56px);}
+.fit-item{display:flex;align-items:flex-start;gap:15px;padding:18px 0;border-top:1px solid var(--line);font-size:1.06rem;color:var(--ink);}
+
+/* ============================== WORK GRID ============================== */
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:clamp(40px,5vw,60px);}
+.work-card{display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:border-color .25s ease, transform .25s ease;}
+.work-card:hover{border-color:var(--line-2);transform:translateY(-3px);}
+.work-card .ph{border:none;border-radius:0;border-top:1px solid var(--line);aspect-ratio:4/3;width:100%;}
+
+/* work-card carousel */
+.work-thumb{display:block;border-top:1px solid var(--line);aspect-ratio:1/1;width:100%;overflow:hidden;position:relative;}
+.work-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease;}
+.work-thumb:hover img{transform:scale(1.03);}
+.work-link{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-weight:600;font-size:.95rem;color:var(--accent-deep);width:fit-content;border-bottom:1.5px solid transparent;padding-bottom:1px;transition:border-color .2s ease, gap .2s ease;}
+.work-link:hover{border-bottom-color:var(--accent-deep);gap:10px;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.carousel{position:relative;border-top:1px solid var(--line);aspect-ratio:1/1;width:100%;overflow:hidden;}
+.carousel .slide{position:absolute;inset:0;border:none;border-radius:0;opacity:0;visibility:hidden;transition:opacity .35s ease;}
+.carousel .slide img{width:100%;height:100%;object-fit:cover;display:block;}
+.carousel-contain{background:var(--bg-2);}
+.carousel-contain .slide img{object-fit:contain;object-position:top;}
+.carousel .slide.active{opacity:1;visibility:visible;}
+.car-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:34px;height:34px;border-radius:50%;border:1px solid var(--line-2);background:var(--bg);color:var(--accent-deep);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease, color .2s ease, border-color .2s ease;}
+.car-arrow:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+.car-arrow svg{width:16px;height:16px;display:block;}
+.car-prev{left:12px;}
+.car-next{right:12px;}
+.car-dots{position:absolute;left:0;right:0;bottom:12px;z-index:3;display:flex;gap:7px;justify-content:center;}
+.car-dot{width:7px;height:7px;border-radius:50%;border:none;padding:0;cursor:pointer;background:var(--line-2);transition:background .2s ease, transform .2s ease;}
+.car-dot.active{background:var(--accent);transform:scale(1.25);}
+.work-card .work-body{padding:22px clamp(20px,2vw,26px) 26px;display:flex;flex-direction:column;gap:7px;flex:1;}
+.work-card .wlabel{font-family:var(--font-body);font-size:.68rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-deep);}
+.work-card .wclient{font-family:var(--font-head);font-weight:600;font-size:1.2rem;letter-spacing:-0.01em;}
+.work-card .wdesc{color:var(--ink-2);font-size:.98rem;}
+.work-more{margin-top:clamp(36px,4vw,48px);}
+.work-more a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-head);font-weight:500;font-size:1.08rem;color:var(--accent-deep);border-bottom:1.5px solid transparent;padding-bottom:2px;transition:border-color .2s ease, gap .2s ease;}
+.work-more a:hover{border-bottom-color:var(--accent-deep);gap:12px;}
+.fit-item .tick{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent-tint);color:var(--accent-deep);display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.fit-item .tick svg{width:13px;height:13px;}
+
+/* ============================== EXPERIENCE ============================== */
+.exp-list{margin-top:clamp(40px,5vw,56px);border-top:1px solid var(--line);}
+.exp-item{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line);transition:padding-left .25s ease;}
+.exp-item:hover{padding-left:8px;}
+.exp-item .ename{font-family:var(--font-head);font-weight:600;font-size:clamp(1.2rem,2vw,1.5rem);letter-spacing:-0.01em;}
+.exp-item .ectx{color:var(--ink-2);font-size:1rem;}
+.exp-item .evia{font-family:var(--font-mono);font-size:.76rem;color:var(--ink-3);text-align:right;white-space:nowrap;}
+.exp-note{margin-top:24px;color:var(--ink-3);font-size:.92rem;font-style:italic;}
+
+/* ============================== ABOUT ============================== */
+.about{background:var(--bg-2);}
+.about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(32px,5vw,72px);align-items:center;}
+.about-photo{aspect-ratio:4/5;}
+.about h2{font-size:clamp(2rem,3.8vw,3rem);margin-bottom:22px;}
+.about p{color:var(--ink-2);font-size:1.1rem;max-width:54ch;}
+.about p + p{margin-top:18px;}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px;}
+.chip{border:1px solid var(--line-2);border-radius:100px;padding:8px 16px;font-size:.88rem;font-weight:500;color:var(--ink);background:var(--bg);}
+.chip .star{color:var(--accent-deep);}
+
+/* ============================== CONTACT ============================== */
+.contact{text-align:center;}
+.contact h2{font-size:clamp(2.4rem,5.5vw,4rem);letter-spacing:-0.035em;}
+.contact .lead{margin:24px auto 0;text-align:center;}
+.contact .btn{margin-top:36px;font-size:1.05rem;padding:16px 32px;}
+.contact .loc{margin-top:30px;color:var(--ink-3);font-size:.95rem;}
+
+/* ============================== FOOTER ============================== */
+.footer{border-top:1px solid var(--line);padding:48px 0 40px;}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;}
+.footer .brand{font-size:1.1rem;}
+.footer .url{color:var(--ink-2);font-size:.95rem;margin-top:6px;}
+.footer-right{text-align:right;}
+.footer-nav{display:flex;gap:24px;flex-wrap:wrap;justify-content:flex-end;font-size:.92rem;}
+.footer-nav a{color:var(--ink-2);transition:color .2s ease;}
+.footer-nav a:hover{color:var(--ink);}
+.footer .meta{color:var(--ink-3);font-size:.85rem;margin-top:14px;}
+.footer .langs{font-family:var(--font-head);}
+
+/* ============================== REVEAL ============================== */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+.reveal.in{opacity:1;transform:none;}
+
+/* ============================== RESPONSIVE ============================== */
+@media (max-width: 980px){
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-media{display:none;}
+  .idea-grid{grid-template-columns:1fr;}
+  .steps{grid-template-columns:1fr 1fr;gap:36px 24px;}
+  .tiers{grid-template-columns:1fr;}
+  .offer-cards{grid-template-columns:1fr;}
+  .work-grid{grid-template-columns:1fr 1fr;}
+  .addon{grid-template-columns:1fr;gap:16px;align-items:flex-start;}
+  .about-grid{grid-template-columns:1fr;}
+  .about-photo{max-width:360px;}
+}
+@media (max-width: 680px){
+  body{font-size:16px;}
+  .svc-grid{grid-template-columns:1fr;}
+  .work-grid{grid-template-columns:1fr;}
+  .proj-list{grid-template-columns:1fr;}
+  .fit-grid{grid-template-columns:1fr;gap:0;}
+  .steps{grid-template-columns:1fr;}
+  .exp-item{grid-template-columns:1fr;gap:6px;}
+  .exp-item .evia{text-align:left;}
+  .footer-inner{flex-direction:column;align-items:flex-start;}
+  .footer-right{text-align:left;}
+  .footer-nav{justify-content:flex-start;}
+}
+
+/* ============================== BACK TO TOP ============================== */
+#backTop{
+  position:fixed;right:22px;bottom:22px;z-index:90;
+  width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--accent);color:#fff;
+  box-shadow:0 6px 20px -6px rgba(10,10,10,.22);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transform:translateY(8px);
+  transition:opacity .3s ease, transform .3s ease, background .2s ease, color .2s ease, visibility .3s ease;
+}
+#backTop.show{opacity:1;visibility:visible;transform:translateY(0);}
+#backTop:hover{background:var(--ink);color:var(--bg);}
+#backTop svg{width:18px;height:18px;display:block;}
+
+/* ============================== TWEAKS PANEL ============================== */
+#tweaks{
+  position:fixed;right:18px;bottom:18px;z-index:100;width:266px;
+  background:var(--bg);border:1px solid var(--line-2);border-radius:16px;
+  box-shadow:0 18px 50px -12px rgba(26,26,26,.28);
+  padding:16px 16px 18px;display:none;font-family:var(--font-body);
+}
+#tweaks.open{display:block;}
+#tweaks .tw-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+#tweaks .tw-title{font-family:var(--font-head);font-weight:600;font-size:1rem;}
+#tweaks .tw-close{background:none;border:none;cursor:pointer;color:var(--ink-3);padding:4px;margin:-4px;line-height:0;}
+#tweaks .tw-close:hover{color:var(--ink);}
+#tweaks .tw-label{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 9px;}
+#tweaks .tw-label:first-of-type{margin-top:0;}
+#tweaks .swatches{display:flex;gap:9px;}
+#tweaks .sw{width:38px;height:38px;border-radius:9px;border:2px solid transparent;cursor:pointer;position:relative;transition:transform .15s ease;}
+#tweaks .sw:hover{transform:scale(1.06);}
+#tweaks .sw.active{border-color:var(--ink);}
+#tweaks .seg{display:flex;flex-direction:column;gap:6px;}
+#tweaks .seg button{text-align:left;border:1px solid var(--line-2);background:var(--bg);border-radius:8px;padding:9px 12px;cursor:pointer;font-family:var(--font-body);font-size:.9rem;color:var(--ink-2);transition:all .15s ease;}
+#tweaks .seg button.active{border-color:var(--ink);color:var(--ink);background:var(--bg-2);font-weight:500;}
+</style>
+</head>
+<body style="font-family: &quot;Hanken Grotesk&quot;">
+
+<!-- ============================== NAV ============================== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand" aria-label="Mado Design — home"><img src="assets/mado-logo.png" alt="Mado Design" /></a>
+    <nav class="nav-links">
+      <a href="#offer">Services</a>
+      <a href="#fit">Who it's for</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="mailto:contact@madodesign.co?subject=Hey%20Mado%20Design" class="btn btn-primary nav-cta" style="display:none" id="navCta">Get in touch</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="13" x2="21" y2="13"/><line x1="3" y1="19" x2="21" y2="19"/></svg>
+    </button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#offer">Services</a>
+  <a href="#fit">Who it's for</a>
+  <a href="#work">Work</a>
+  <a href="#contact">Contact</a>
+  <a href="mailto:contact@madodesign.co?subject=Hey%20Mado%20Design" class="btn btn-primary">Get in touch</a>
+</div>
+
+<main id="top">
+
+<!-- ============================== HERO ============================== -->
+<section class="hero wrap">
+  <div class="hero-grid">
+    <div>
+      <h1>Design for SMEs, without the commitment of a full-time hire.</h1>
+      <p class="lead">Mado Design offers Web &amp; UI Design, Digital Marketing Design Support, and<br />APAC Design Localisation to businesses.</p>
+      <div class="hero-cta">
+        <a href="mailto:contact@madodesign.co?subject=Hey%20Mado%20Design" class="btn btn-primary">Start a project</a>
+        <a href="#offer" class="btn btn-ghost">See pricing</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== OFFER (services + pricing) ============================== -->
+<section class="offer section-pad" id="offer">
+  <div class="wrap reveal">
+    <p class="eyebrow no-dash">Services</p>
+    <h2 style="font-size:clamp(2rem,3.8vw,3rem);">Two ways to work with us</h2>
+
+    <div class="offer-cards">
+      <!-- Card 1 -->
+      <div class="offer-card">
+        <div class="tagrow"><h3>Web &amp; UI Design</h3><span class="pill">Projects</span></div>
+        <p class="desc">Defined projects with fixed-fee pricing and a clear delivery timeline, managed from discovery through to developer-ready handover.</p>
+        <div class="offer-rows">
+          <div class="offer-row">
+            <span class="rname">Landing or campaign page<span class="rsub">1 page</span></span>
+          </div>
+          <div class="offer-row">
+            <span class="rname">Product or service site<span class="rsub">4–5 pages</span></span>
+          </div>
+          <div class="offer-row">
+            <span class="rname">Larger website<span class="rsub">6–10 pages</span></span>
+          </div>
+          <div class="offer-row">
+            <span class="rname">Website maintenance &amp; optimisation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="offer-card">
+        <div class="tagrow"><h3>Digital Marketing Design Support</h3><span class="pill">Retainer</span></div>
+        <p class="desc">A monthly retainer for ongoing design needs. Scope is agreed at the start of each month, then briefs, feedback, and delivery are handled throughout.</p>
+        <div class="offer-rows">
+          <div class="offer-row">
+            <span class="rname">Starter<span class="rsub">8 hrs / week</span></span>
+          </div>
+          <div class="offer-row">
+            <span class="rname">Standard<span class="rsub">16 hrs / week</span></span>
+          </div>
+          <div class="offer-row">
+            <span class="rname">Full Partner<span class="rsub">24 hrs / week</span></span>
+          </div>
+        </div>
+        <p class="card-note">A minimum three-month commitment applies.</p>
+      </div>
+    </div>
+
+    <!-- Add-on -->
+    <div class="addon">
+      <div class="addon-left">
+        <span class="pill">Add-on</span>
+        <h3>APAC Design Localisation</h3>
+      </div>
+      <p>For clients expanding into APAC markets, Web &amp; UI Design and Digital Marketing Design Support can be delivered with APAC localisation built in, such as cultural adaptation and multilingual design.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== GOOD FIT ============================== -->
+<section class="section-pad" id="fit">
+  <div class="wrap reveal">
+    <p class="eyebrow no-dash">Who it's for</p>
+    <h2 style="font-size:clamp(2rem,3.8vw,3rem);">You might need a design partner if …</h2>
+    <div class="fit-grid">
+      <div class="fit-item"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>You have ongoing design needs, but not enough to justify a full-time hire.</div>
+      <div class="fit-item"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>You need both one-off projects and regular design support.</div>
+      <div class="fit-item"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>You are a business looking to expand into APAC markets.</div>
+      <div class="fit-item"><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>You prefer a dedicated point of contact, instead of managing an agency or multiple freelancers.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== WORK ============================== -->
+<section class="section-pad" id="work" style="background:var(--bg-2);">
+  <div class="wrap reveal">
+    <p class="eyebrow no-dash">Work</p>
+    <h2 style="font-size:clamp(2rem,3.8vw,3rem);">Examples</h2>
+    <div class="work-grid">
+      <div class="work-card">
+        <div class="work-body">
+          <span class="wlabel">Web &amp; UI Design</span>
+          <h3 class="wclient">SG Alliance</h3>
+          <span class="wdesc">An insurance comparison microsite, redesigned to improve usability for both existing and prospective clients.</span>
+          <a class="work-link" href="https://easicompare.com/rep/generalinsurance" target="_blank" rel="noopener">View website →</a>
+        </div>
+        <div class="work-thumb">
+          <img src="assets/sg-alliance.png" alt="Insurance comparison microsite for SG Alliance shown on a laptop" />
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-body">
+          <span class="wlabel">Digital Marketing Design Support</span>
+          <h3 class="wclient">H&amp;M</h3>
+          <span class="wdesc">Social media assets for a global fashion campaign, produced for the Southeast Asian market.</span>
+        </div>
+        <div class="carousel" data-carousel aria-roledescription="carousel" aria-label="Project images for H&M">
+          <div class="slide active" role="img" aria-label="H&M S/S 2024 kids skirt set campaign — image 1 of 4"><img src="assets/hm-1.jpg" alt="H&M S/S 2024 kidswear campaign — four girls in white skirt sets" /></div>
+          <div class="slide" role="img" aria-label="H&M S/S 2024 menswear overshirt campaign — image 2 of 4"><img src="assets/hm-2.jpg" alt="H&M S/S 2024 menswear campaign — model in a beige overshirt" /></div>
+          <div class="slide" role="img" aria-label="H&M S/S 2024 silver skirt campaign — image 3 of 4"><img src="assets/hm-3.jpg" alt="H&M S/S 2024 womenswear campaign — model in a white shirt and silver skirt" /></div>
+          <div class="slide" role="img" aria-label="H&M S/S 2024 broderie shirt campaign — image 4 of 4"><img src="assets/hm-4.jpg" alt="H&M S/S 2024 womenswear campaign — model in a white broderie shirt on a stool" /></div>
+          <button class="car-arrow car-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button class="car-arrow car-next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          <div class="car-dots" role="group" aria-label="Choose image"></div>
+          <span class="sr-only" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="work-card">
+        <div class="work-body">
+          <span class="wlabel">APAC Design Localisation</span>
+          <h3 class="wclient">3M Healthcare</h3>
+          <span class="wdesc">Display advertising for the Japan market, adapted for local typography and messaging density.</span>
+        </div>
+        <div class="carousel carousel-contain" data-carousel aria-roledescription="carousel" aria-label="Project images for 3M Healthcare">
+          <div class="slide active" role="img" aria-label="3M Healthcare Japan display ad — medical professional — image 1 of 3"><img src="assets/3m-1.jpg" alt="3M Healthcare Japan display advertising featuring a nurse with a tablet" /></div>
+          <div class="slide" role="img" aria-label="3M Healthcare Japan display ad — research scientists — image 2 of 3"><img src="assets/3m-2.jpg" alt="3M Healthcare Japan display advertising featuring a lab scientist" /></div>
+          <div class="slide" role="img" aria-label="3M Healthcare Japan display ad — patient — image 3 of 3"><img src="assets/3m-3.jpg" alt="3M Healthcare Japan display advertising featuring a patient" /></div>
+          <button class="car-arrow car-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <button class="car-arrow car-next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          <div class="car-dots" role="group" aria-label="Choose image"></div>
+          <span class="sr-only" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== ABOUT (removed) ============================== -->
+
+<!-- ============================== CONTACT ============================== -->
+<section class="section-pad contact" id="contact">
+  <div class="wrap reveal">
+    <h2>Let's collaborate.</h2>
+    <a href="mailto:contact@madodesign.co?subject=Hey%20Mado%20Design" class="btn btn-primary">Get in touch</a>
+  </div>
+</section>
+
+</main>
+
+<button id="backTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div>
+      <div class="brand"><img src="assets/mado-logo.png" alt="Mado Design" /></div>
+      <div class="url">www.madodesign.co</div>
+    </div>
+    <div class="footer-right">
+      <nav class="footer-nav">
+        <a href="#offer">Services</a>
+        <a href="#fit">Who it's for</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="meta">KVK 97710512 &nbsp;·&nbsp; UEN: 53523399W &nbsp;·&nbsp; <a href="mailto:contact@madodesign.co?subject=Hey%20Mado%20Design">CONTACT@MADODESIGN.CO</a> &nbsp;·&nbsp; © 2026 Mado Design</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================== TWEAKS PANEL ============================== -->
+<div id="tweaks" aria-label="Tweaks">
+  <div class="tw-head">
+    <span class="tw-title">Tweaks</span>
+    <button class="tw-close" id="twClose" aria-label="Close tweaks">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="tw-label">Accent</div>
+  <div class="swatches" id="twAccent"></div>
+  <div class="tw-label">Heading font</div>
+  <div class="seg" id="twFont"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- Sticky nav shadow ---------------- */
+  var nav = document.getElementById('nav');
+  var navCta = document.getElementById('navCta');
+  function onScroll(){
+    if(window.scrollY > 12){ nav.classList.add('scrolled'); navCta.style.display='inline-flex'; }
+    else { nav.classList.remove('scrolled'); navCta.style.display='none'; }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  /* ---------------- Back to top ---------------- */
+  var backTop = document.getElementById('backTop');
+  var hero = document.querySelector('.hero');
+  function onScrollTop(){
+    var trigger = hero ? hero.offsetTop + hero.offsetHeight : 600;
+    backTop.classList.toggle('show', window.scrollY > trigger);
+  }
+  window.addEventListener('scroll', onScrollTop, {passive:true}); onScrollTop();
+  backTop.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+
+  /* ---------------- Work-card carousels ---------------- */
+  document.querySelectorAll('[data-carousel]').forEach(function(car){
+    var slides = Array.prototype.slice.call(car.querySelectorAll('.slide'));
+    var dotsWrap = car.querySelector('.car-dots');
+    var live = car.querySelector('.sr-only');
+    var idx = 0;
+    var dots = slides.map(function(_, i){
+      var d = document.createElement('button');
+      d.type = 'button'; d.className = 'car-dot' + (i===0?' active':'');
+      d.setAttribute('aria-label', 'Go to image ' + (i+1) + ' of ' + slides.length);
+      d.addEventListener('click', function(){ go(i); });
+      dotsWrap.appendChild(d);
+      return d;
+    });
+    function go(n){
+      idx = (n + slides.length) % slides.length;
+      slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
+      dots.forEach(function(d,i){ d.classList.toggle('active', i===idx); });
+      if(live){ live.textContent = 'Image ' + (idx+1) + ' of ' + slides.length; }
+    }
+    car.querySelector('.car-prev').addEventListener('click', function(){ go(idx-1); });
+    car.querySelector('.car-next').addEventListener('click', function(){ go(idx+1); });
+  });
+
+
+  /* ---------------- Mobile menu ---------------- */
+  var toggle = document.getElementById('navToggle');
+  var menu = document.getElementById('mobileMenu');
+  toggle.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ menu.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); });
+  });
+
+  /* ---------------- Currency (single display, toggle removed) ---------------- */
+  var curToggle = document.getElementById('curToggle');
+  if(curToggle){
+    var amounts = document.querySelectorAll('[data-eur]');
+    function setCurrency(cur){
+      curToggle.setAttribute('data-cur', cur);
+      curToggle.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-cur')===cur); });
+      amounts.forEach(function(el){ el.textContent = el.getAttribute('data-'+cur); });
+      try{ localStorage.setItem('mado-currency', cur); }catch(e){}
+    }
+    curToggle.querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click', function(){ setCurrency(b.getAttribute('data-cur')); });
+    });
+    var savedCur='eur';
+    try{ savedCur = localStorage.getItem('mado-currency') || 'eur'; }catch(e){}
+    setCurrency(savedCur);
+  }
+
+  /* ---------------- Scroll reveal ---------------- */
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if('IntersectionObserver' in window && !prefersReduced){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ============================================================
+     TWEAKS — vanilla, host-protocol aware
+     ============================================================ */
+  var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "accent": "blue",
+    "headingFont": "Schibsted Grotesk"
+  }/*EDITMODE-END*/;
+
+  var ACCENTS = {
+    blue: { label:"Electric blue", set:["#0000EE","#0000EE","#E8E8FD"] },
+    mono: { label:"Monochrome",    set:["#0A0A0A","#0A0A0A","#ECECEC"] },
+    red:  { label:"Signal red",    set:["#EE0000","#D40000","#FBE6E6"] }
+  };
+  var FONTS = ["Schibsted Grotesk","Bricolage Grotesque","Instrument Sans"];
+
+  var tw = Object.assign({}, TWEAK_DEFAULTS);
+  try{ var ls = JSON.parse(localStorage.getItem('mado-tweaks')||'null'); if(ls) tw = Object.assign(tw, ls); }catch(e){}
+  if(!ACCENTS[tw.accent]) tw.accent = 'blue';
+
+  function applyTweaks(){
+    var a = ACCENTS[tw.accent] || ACCENTS.blue;
+    var r = document.documentElement;
+    r.style.setProperty('--accent', a.set[0]);
+    r.style.setProperty('--accent-deep', a.set[1]);
+    r.style.setProperty('--accent-tint', a.set[2]);
+    r.style.setProperty('--font-head', '"'+tw.headingFont+'", system-ui, sans-serif');
+  }
+
+  /* build controls */
+  var accWrap = document.getElementById('twAccent');
+  Object.keys(ACCENTS).forEach(function(key){
+    var b = document.createElement('button');
+    b.className = 'sw'; b.title = ACCENTS[key].label;
+    b.style.background = ACCENTS[key].set[0];
+    b.setAttribute('data-acc', key);
+    b.addEventListener('click', function(){ setTweak('accent', key); });
+    accWrap.appendChild(b);
+  });
+  var fontWrap = document.getElementById('twFont');
+  FONTS.forEach(function(f){
+    var b = document.createElement('button');
+    b.textContent = f; b.style.fontFamily = '"'+f+'", sans-serif';
+    b.setAttribute('data-font', f);
+    b.addEventListener('click', function(){ setTweak('headingFont', f); });
+    fontWrap.appendChild(b);
+  });
+  function syncControls(){
+    accWrap.querySelectorAll('.sw').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-acc')===tw.accent); });
+    fontWrap.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-font')===tw.headingFont); });
+  }
+
+  function setTweak(key, val){
+    tw[key] = val;
+    applyTweaks(); syncControls();
+    try{ localStorage.setItem('mado-tweaks', JSON.stringify(tw)); }catch(e){}
+    var edits = {}; edits[key] = val;
+    try{ window.parent.postMessage({ type:'__edit_mode_set_keys', edits: edits }, '*'); }catch(e){}
+  }
+
+  applyTweaks(); syncControls();
+
+  /* host protocol */
+  var panel = document.getElementById('tweaks');
+  window.addEventListener('message', function(e){
+    var t = e && e.data && e.data.type;
+    if(t === '__activate_edit_mode'){ panel.classList.add('open'); }
+    else if(t === '__deactivate_edit_mode'){ panel.classList.remove('open'); }
+  });
+  document.getElementById('twClose').addEventListener('click', function(){
+    panel.classList.remove('open');
+    try{ window.parent.postMessage({ type:'__edit_mode_dismissed' }, '*'); }catch(e){}
+  });
+  try{ window.parent.postMessage({ type:'__edit_mode_available' }, '*'); }catch(e){}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-bg font-body text-ink;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-head font-semibold text-ink;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  img {
+    display: block;
+    max-width: 100%;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    @apply outline-accent;
+    outline: 2px solid;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
