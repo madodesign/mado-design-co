@@ -16,9 +16,6 @@ export function Hero() {
           <Button href={contactMailto} variant="primary">
             Start a project
           </Button>
-          <Button href="#offer" variant="ghost">
-            See pricing
-          </Button>
         </div>
       </Container>
     </section>
